@@ -21,8 +21,11 @@ class DbFirestoreService implements DbApi {
     DocumentReference _documentReference =
         await _firestore.collection(_collectionProducts).add({
       'name': product.name,
-      'picture': product.picture,
+      'picture1': product.picture1,
+      'picture2': product.picture2,
       'price': product.price,
+      'color': product.color,
+      'size': product.size,
     });
     return _documentReference.documentID != null;
   }
@@ -37,16 +40,22 @@ class DbFirestoreService implements DbApi {
       cart.add({
         'documentID': product.documentID,
         'name': product.name,
-        'picture': product.picture,
+        'picture1': product.picture1,
+        'picture2': product.picture2,
         'price': product.price,
+        'color': product.color,
+        'size': product.size,
       });
     } else {
       cart = List<Map<String, dynamic>>();
       cart.add({
         'documentID': product.documentID,
         'name': product.name,
-        'picture': product.picture,
+        'picture1': product.picture1,
+        'picture2': product.picture2,
         'price': product.price,
+        'color': product.color,
+        'size': product.size,
       });
     }
   }

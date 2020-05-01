@@ -1,0 +1,64 @@
+import 'package:ecommerce_app/ui/pages/products.dart';
+import 'package:ecommerce_app/utils/color.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class Home extends StatefulWidget {
+  const Home({Key key}) : super(key: key);
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _currentIndex = 0;
+  CustomColour _customColour = CustomColour();
+
+  final List<Widget> _children = [
+    Text('1'),
+    Products(),
+    Text('3'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Row(
+          children: <Widget>[
+            Expanded(
+                child: Text(
+              'Accountz',
+              textAlign: TextAlign.center,
+            )),
+          ],
+        ),
+      ),
+      body: _children[_currentIndex],
+      //  _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: onTabTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.shopping_cart),
+            title: new Text('Cart'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.home),
+            title: new Text('Home'),
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.exit_to_app), title: Text('Sign Out'))
+        ],
+      ),
+    );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+}
