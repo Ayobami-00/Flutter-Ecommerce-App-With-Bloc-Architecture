@@ -13,12 +13,22 @@ class HomeBloc {
   Sink<List<Product>> get _addListProduct => _productController.sink;
   Stream<List<Product>> get listProduct => _productController.stream;
 
+  final StreamController<Product> _addProductController =
+      BehaviorSubject<Product>();
+  Sink<Product> get _addProduct =>  _addProductController.sink;
+  Stream<Product> get getProduct =>  _addProductController.stream;
+
   HomeBloc(this.dbApi, this.authenticationApi) {
     _startListeners();
+     _addProductController.stream.listen(addProductToDb);
+
+  }
+
+  Future<String> addProductToDb(Product product) async {
+    dbApi.addProduct(product);
   }
 
   void _startListeners() {
-    // Retrieve Firestore Journal Records as List<Journal> not DocumentSnapshot
     authenticationApi.getFirebaseAuth().currentUser().then((user) {
       dbApi.getProductList().listen((productDocs) {
         _addListProduct.add(productDocs);
@@ -30,5 +40,6 @@ class HomeBloc {
 
   void dispose() {
     _productController.close();
+    _addProductController.close();
   }
 }

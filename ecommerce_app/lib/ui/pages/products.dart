@@ -2,6 +2,7 @@ import 'package:ecommerce_app/blocs/authentication/authentication_bloc.dart';
 import 'package:ecommerce_app/blocs/authentication/authentication_bloc_provider.dart';
 import 'package:ecommerce_app/blocs/home/home_bloc.dart';
 import 'package:ecommerce_app/blocs/home/home_bloc_provider.dart';
+import 'package:ecommerce_app/ui/pages/add_product.dart';
 import 'package:ecommerce_app/ui/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +63,12 @@ class _ProductsState extends State<Products> {
           children: <Widget>[
             SizedBox(width: 10.0),
             FlatButton.icon(
-              onPressed: () => {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => AddProduct() ));
+              },
               icon: Icon(Icons.add),
               label: Text("PRODUCTS",
                   style:
