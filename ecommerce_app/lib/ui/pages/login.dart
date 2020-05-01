@@ -232,7 +232,8 @@ class _LoginState extends State<Login> {
                       elevation: 0.0,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState.validate() && _selectedPage == Page.signup) {
+
                             print(_email.text);
                             print(_password.text);
                             User user_details = User(
@@ -369,7 +370,7 @@ class _LoginState extends State<Login> {
                       elevation: 0.0,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState.validate() && _selectedPage == Page.signin) {
                             User user_details = User(
                                 " ", _email.text, _password.text);
                             _loginBloc.signInUser.add(user_details);

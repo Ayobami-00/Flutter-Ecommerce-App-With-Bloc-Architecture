@@ -1,3 +1,7 @@
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc.dart';
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc_provider.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc_provider.dart';
 import 'package:ecommerce_app/ui/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +11,25 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  AuthenticationBloc _authenticationBloc;
+  HomeBloc _homeBloc;
+  String _uid;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _authenticationBloc =
+        AuthenticationBlocProvider.of(context).authenticationBloc;
+    _homeBloc = HomeBlocProvider.of(context).homeBloc;
+    _uid = HomeBlocProvider.of(context).uid;
+  }
+
+  @override
+  void dispose() {
+    _homeBloc.dispose();
+    super.dispose();
+  }
+
   List<Map<String, dynamic>> items = [
     {
       "name": "Mother Board",
@@ -51,23 +74,40 @@ class _ProductsState extends State<Products> {
         Divider(color: Colors.black),
         SizedBox(height: 10.0),
         Flexible(
-          child: GridView.builder(
-            itemCount: items.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 1.5,
-                mainAxisSpacing: 1.5,
-                childAspectRatio: 0.7),
-            itemBuilder: (BuildContext context, int index) {
-              return ProductCard(
-                name: items[index]["name"],
-                price: items[index]["price"],
-                picture1: items[index]["picture1"],
-                picture2: items[index]["picture2"],
-                color: items[index]["color"],
-                size: items[index]["size"],
-              );
-            },
+          child: StreamBuilder(
+            stream: _homeBloc.listProduct,
+            builder: ((BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasData) {
+                return GridView.builder(
+                  itemCount: snapshot.data.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 1.5,
+                      mainAxisSpacing: 1.5,
+                      childAspectRatio: 0.7),
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProductCard(
+                      name: snapshot.data[index].name,
+                      price: snapshot.data[index].price,
+                      picture1: snapshot.data[index].picture1,
+                      picture2: snapshot.data[index].picture2,
+                      color: snapshot.data[index].color,
+                      size: snapshot.data[index].size,
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Container(
+                    child: Text('No Products Added'),
+                  ),
+                );
+              }
+            }),
           ),
         )
       ]),

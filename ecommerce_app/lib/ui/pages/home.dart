@@ -1,3 +1,7 @@
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc.dart';
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc_provider.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc_provider.dart';
 import 'package:ecommerce_app/ui/pages/products.dart';
 import 'package:ecommerce_app/utils/color.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,13 +15,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   CustomColour _customColour = CustomColour();
 
   final List<Widget> _children = [
     Text('1'),
     Products(),
-    Text('3'),
   ];
 
   @override
@@ -57,8 +60,10 @@ class _HomeState extends State<Home> {
   }
 
   void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index != 2) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 }

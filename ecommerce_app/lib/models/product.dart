@@ -3,7 +3,7 @@ class Product {
   String name;
   String picture1;
   String picture2;
-  double price;
+  int price;
   String color;
   String size;
 
@@ -14,7 +14,7 @@ class Product {
         name: doc["name"],
         picture1: doc["picture1"],
         picture2: doc["picture2"],
-        price: doc["price"],
+        price: (doc["price"] as num).toInt(),
         color: doc["color"],
         size : doc["size"],
       );
