@@ -24,7 +24,7 @@ class _AddProductState extends State<AddProduct> {
   Color grey = Colors.white;
   Color red = Colors.red;
   String selectedSize;
-  List<String> _colourList = ["Red", "Green", "Blue", "Orange", "Purple"];
+  List<String> _colourList = ["Red", "Green", "Blue", "Orange", "Purple","None"];
   File _image1;
   File _image2;
   bool isLoading = false;
@@ -51,7 +51,7 @@ class _AddProductState extends State<AddProduct> {
       body: Form(
         key: _formKey,
         child: isLoading
-            ? CircularProgressIndicator()
+            ? Center(child: CircularProgressIndicator())
             : ListView(children: <Widget>[
               SizedBox(height: 20.0),
                 Text(
@@ -166,10 +166,14 @@ class _AddProductState extends State<AddProduct> {
                   ],
                 ),
 
+                 SizedBox(height: 10.0),
+
                 Text(
                   "Pick a size",
                   textAlign: TextAlign.center,
                 ),
+
+                 SizedBox(height: 10.0),
 
                 Row(
                   children: <Widget>[
@@ -190,16 +194,18 @@ class _AddProductState extends State<AddProduct> {
                         onChanged: (value) => changeSelectedSize('XL')),
                     Text("XL"),
                     Checkbox(
-                        value: selectedSize == 'XXL',
-                        onChanged: (value) => changeSelectedSize('XXL')),
-                    Text("XXL"),
+                        value: selectedSize == 'None',
+                        onChanged: (value) => changeSelectedSize('None')),
+                    Text("None"),
                   ],
                 ),
 
+                 SizedBox(height: 20.0),
+
                 FlatButton(
-                  color: red,
+                  color: black,
                   textColor: white,
-                  child: Text('add product'),
+                  child: Text('ADD',style: TextStyle(fontSize: 15.0)),
                   onPressed: () {
                     validateAndUpload();
                   },
@@ -258,7 +264,6 @@ class _AddProductState extends State<AddProduct> {
         if (selectedSize.isNotEmpty) {
           String imageUrl1;
           String imageUrl2;
-          String imageUrl3;
           final FirebaseStorage storage = FirebaseStorage.instance;
           final String picture1 =
               "1${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
@@ -268,10 +273,11 @@ class _AddProductState extends State<AddProduct> {
           final String picture2 =
               "2${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
           StorageUploadTask task2 =
-              storage.ref().child(picture1).putFile(_image2);
+              storage.ref().child(picture2).putFile(_image2);
 
           StorageTaskSnapshot snapshot1 =
               await task1.onComplete.then((snapshot) => snapshot);
+        
 
           task2.onComplete.then((snapshot2) async {
             imageUrl1 = await snapshot1.ref.getDownloadURL();

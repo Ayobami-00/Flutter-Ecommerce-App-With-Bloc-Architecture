@@ -5,6 +5,7 @@ import 'package:ecommerce_app/services/db_firestore_api.dart';
 class DbFirestoreService implements DbApi {
   Firestore _firestore = Firestore.instance;
   String _collectionProducts = 'products';
+  String _collectionsUsers = 'users';
 
   Stream<List<Product>> getProductList() {
     return _firestore
@@ -32,44 +33,33 @@ class DbFirestoreService implements DbApi {
 
   Future<void> addProductToCart(String uid, Product product) async {
     DocumentSnapshot doc =
-        await _firestore.collection("users").document(uid).get();
-    List<Map<String, dynamic>> cart = doc.data["cart"] != null
-        ? doc.data["cart"].castList<Map<String, dynamic>>()
-        : null;
-    if (cart != null) {
-      cart.add({
-        'documentID': product.documentID,
-        'name': product.name,
-        'picture1': product.picture1,
-        'picture2': product.picture2,
-        'price': product.price,
-        'color': product.color,
-        'size': product.size,
-      });
+        await _firestore.collection(_collectionsUsers).document(uid).get();
+    List<Product> cartList = doc.data["cart"] != null ? (doc.data["cart"] as List).map((product) => Product.fromDoc(product)).toList() : null;
+    if (cartList != null) {
+      cartList.add(product);
+      List<dynamic> cartMap = cartList.map((product) => Product().toJson(product)).toList();
+      await _firestore
+          .collection(_collectionsUsers)
+          .document(uid)
+          .updateData({'cart': cartMap});
     } else {
-      cart = List<Map<String, dynamic>>();
-      cart.add({
-        'documentID': product.documentID,
-        'name': product.name,
-        'picture1': product.picture1,
-        'picture2': product.picture2,
-        'price': product.price,
-        'color': product.color,
-        'size': product.size,
-      });
+      List<Map<String, dynamic>> cartMap;
+      cartMap.add(product.toJson(product));
+      await _firestore
+          .collection(_collectionsUsers)
+          .document(uid)
+          .updateData({'cart': cartMap});
     }
   }
 
-  Future<List<Product>> getCartList(String uid) async {
-    DocumentSnapshot doc =
-        await _firestore.collection("users").document(uid).get();
-    List<Map<String, dynamic>> cart = doc.data["cart"] != null
-        ? doc.data["cart"].castList<Map<String, dynamic>>()
-        : null;
-    List<Product> data;
-    cart.forEach((f) {
-      data.add(Product.fromDoc(f));
+  Stream<List<Product>> getCartList(String uid) {
+    return _firestore
+        .collection(_collectionsUsers)
+        .document(uid)
+        .snapshots()
+        .map((DocumentSnapshot snapshot) {
+        List<Product> cart = snapshot.data["cart"] != null ? (snapshot.data["cart"] as List).map((product) => Product.fromDoc(product)).toList() : null;
+      return cart;
     });
-    return data;
   }
 }

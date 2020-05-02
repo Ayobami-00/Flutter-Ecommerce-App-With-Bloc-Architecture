@@ -1,7 +1,14 @@
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc.dart';
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc.dart';
+import 'package:ecommerce_app/blocs/authentication/authentication_bloc_provider.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc.dart';
+import 'package:ecommerce_app/blocs/home/home_bloc_provider.dart';
+import 'package:ecommerce_app/models/product.dart';
 import 'package:ecommerce_app/ui/widgets/carousel_products.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class ProductDetails extends StatelessWidget {
+class ProductDetails extends StatefulWidget {
   final String name;
   final int price;
   final String picture1;
@@ -9,7 +16,41 @@ class ProductDetails extends StatelessWidget {
   final String color;
   final String size;
 
-  const ProductDetails({Key key,this.name,this.price,this.picture1,this.picture2,this.color,this.size}) : super(key: key);
+  const ProductDetails(
+      {Key key,
+      this.name,
+      this.price,
+      this.picture1,
+      this.picture2,
+      this.color,
+      this.size})
+      : super(key: key);
+
+  @override
+  _ProductDetailsState createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  AuthenticationBloc _authenticationBloc;
+
+  HomeBloc _homeBloc;
+
+  String _uid;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _authenticationBloc =
+        AuthenticationBlocProvider.of(context).authenticationBloc;
+    _homeBloc = HomeBlocProvider.of(context).homeBloc;
+    _uid = HomeBlocProvider.of(context).uid;
+  }
+
+  // @override
+  // void dispose() {
+  //   _homeBloc.dispose();
+  //   super.dispose();
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,35 +77,38 @@ class ProductDetails extends StatelessWidget {
                 ),
               ),
               CarouselProducts(
-                image1: picture1,
-                image2: picture2,
+                image1: widget.picture1,
+                image2: widget.picture2,
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Spacer(),
-                    Spacer(),
                     Text(
-                      "$name",
+                      "${widget.name}",
                       style: Theme.of(context).textTheme.display1.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                     ),
-                    SizedBox(height: 10.0,),
-                    Text("\$ $price"),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text("\$ ${widget.price}"),
+                    ),
                     Spacer(),
                     Text(
-                      "Color: $color",
+                      "Color: ${widget.color}",
                       style: Theme.of(context).textTheme.headline.copyWith(
                             color: Colors.black,
                           ),
                     ),
-                    
                     Spacer(),
                     Text(
-                      "Size: $size",
+                      "Size: ${widget.size}",
                       style: Theme.of(context).textTheme.headline.copyWith(
                             color: Colors.black,
                           ),
@@ -88,7 +132,18 @@ class ProductDetails extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Product product_details = Product(
+                              name: widget.name,
+                              price: widget.price,
+                              picture1: widget.picture1,
+                              picture2: widget.picture2,
+                              color: widget.color,
+                              size: widget.size,
+                            );
+                            _homeBloc.addToCart.add(product_details);
+                            Fluttertoast.showToast(msg: "Product added to cart");
+                          },
                           color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -96,39 +151,39 @@ class ProductDetails extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 15),
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(
-                          15.0,
-                        ),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                    Container(
-                      height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(
-                          15.0,
-                        ),
-                      ),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.share,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
+                    // Container(
+                    //   margin: const EdgeInsets.only(right: 15),
+                    //   height: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.black,
+                    //     borderRadius: BorderRadius.circular(
+                    //       15.0,
+                    //     ),
+                    //   ),
+                    //   child: IconButton(
+                    //     icon: Icon(
+                    //       Icons.favorite_border,
+                    //       color: Colors.white,
+                    //     ),
+                    //     onPressed: () {},
+                    //   ),
+                    // ),
+                    // Container(
+                    //   height: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.black,
+                    //     borderRadius: BorderRadius.circular(
+                    //       15.0,
+                    //     ),
+                    //   ),
+                    //   child: IconButton(
+                    //     icon: Icon(
+                    //       Icons.share,
+                    //       color: Colors.white,
+                    //     ),
+                    //     onPressed: () {},
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
