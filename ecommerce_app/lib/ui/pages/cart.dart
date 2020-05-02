@@ -153,39 +153,6 @@ class _CartState extends State<Cart> {
               }),
             ),
           ),
-          Divider(),
-          // Row(
-          //   children: <Widget>[
-          //     Expanded(
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: <Widget>[
-          //           Text("TOTAL", style: Theme.of(context).textTheme.subtitle),
-          //           Text("USD. $total",
-          //               style: Theme.of(context).textTheme.headline),
-          //         ],
-          //       ),
-          //     ),
-          //     Expanded(
-          //       child: Container(
-          //         height: 50,
-          //         child: RaisedButton(
-          //           child: Text(
-          //             "CHECKOUT",
-          //             style: Theme.of(context).textTheme.button.copyWith(
-          //                   color: Colors.white,
-          //                 ),
-          //           ),
-          //           onPressed: () {},
-          //           color: Colors.black,
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(15.0),
-          //           ),
-          //         ),
-          //       ),
-          //     )
-          //   ],
-          // ),
         ],
       ),
     );

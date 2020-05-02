@@ -60,13 +60,10 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                       height: 100,
                       width: 200,
-                      decoration: BoxDecoration(
-                        // Box decoration takes a gradient
+                      decoration: BoxDecoration(                      
                         gradient: LinearGradient(
-                          // Where the linear gradient begins and ends
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                          // Add one stop for each color. Stops should increase from 0 to 1
                           colors: [
                             // Colors are easy thanks to Flutter's Colors class.
                             Colors.black.withOpacity(0.8),

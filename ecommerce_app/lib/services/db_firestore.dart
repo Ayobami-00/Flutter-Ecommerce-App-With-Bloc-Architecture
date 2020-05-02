@@ -34,21 +34,30 @@ class DbFirestoreService implements DbApi {
   Future<void> addProductToCart(String uid, Product product) async {
     DocumentSnapshot doc =
         await _firestore.collection(_collectionsUsers).document(uid).get();
-    List<Product> cartList = doc.data["cart"] != null ? (doc.data["cart"] as List).map((product) => Product.fromDoc(product)).toList() : null;
+    List<Product> cartList = doc.data["cart"] != null
+        ? (doc.data["cart"] as List)
+            .map((product) => Product.fromDoc(product))
+            .toList()
+        : null;
     if (cartList != null) {
       cartList.add(product);
-      List<dynamic> cartMap = cartList.map((product) => Product().toJson(product)).toList();
+      List<dynamic> cartMap =
+          cartList.map((product) => Product().toJson(product)).toList();
       await _firestore
           .collection(_collectionsUsers)
           .document(uid)
           .updateData({'cart': cartMap});
     } else {
-      List<Map<String, dynamic>> cartMap;
-      cartMap.add(product.toJson(product));
-      await _firestore
-          .collection(_collectionsUsers)
-          .document(uid)
-          .updateData({'cart': cartMap});
+      await _firestore.collection(_collectionsUsers).document(uid).updateData({
+        'cart': [{
+          'name': product.name,
+          'picture1': product.picture1,
+          'picture2': product.picture2,
+          'price': product.price,
+          'color': product.color,
+          'size': product.size,
+        }]
+      });
     }
   }
 
@@ -58,7 +67,11 @@ class DbFirestoreService implements DbApi {
         .document(uid)
         .snapshots()
         .map((DocumentSnapshot snapshot) {
-        List<Product> cart = snapshot.data["cart"] != null ? (snapshot.data["cart"] as List).map((product) => Product.fromDoc(product)).toList() : null;
+      List<Product> cart = snapshot.data["cart"] != null
+          ? (snapshot.data["cart"] as List)
+              .map((product) => Product.fromDoc(product))
+              .toList()
+          : null;
       return cart;
     });
   }

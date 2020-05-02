@@ -151,39 +151,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                       ),
                     ),
-                    // Container(
-                    //   margin: const EdgeInsets.only(right: 15),
-                    //   height: double.infinity,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.black,
-                    //     borderRadius: BorderRadius.circular(
-                    //       15.0,
-                    //     ),
-                    //   ),
-                    //   child: IconButton(
-                    //     icon: Icon(
-                    //       Icons.favorite_border,
-                    //       color: Colors.white,
-                    //     ),
-                    //     onPressed: () {},
-                    //   ),
-                    // ),
-                    // Container(
-                    //   height: double.infinity,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.black,
-                    //     borderRadius: BorderRadius.circular(
-                    //       15.0,
-                    //     ),
-                    //   ),
-                    //   child: IconButton(
-                    //     icon: Icon(
-                    //       Icons.share,
-                    //       color: Colors.white,
-                    //     ),
-                    //     onPressed: () {},
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

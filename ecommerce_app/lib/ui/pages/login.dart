@@ -3,6 +3,7 @@ import 'package:ecommerce_app/models/user.dart';
 import 'package:ecommerce_app/services/authentication.dart';
 import 'package:ecommerce_app/utils/color.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 enum Page { signin, signup }
 
@@ -19,8 +20,6 @@ class _LoginState extends State<Login> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   Page _selectedPage = Page.signin;
-  bool _isLoading = false;
-  bool _checkBoxTileVal = false;
   CustomColour _customColour = CustomColour();
   @override
   void initState() {
@@ -36,99 +35,105 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 50.0),
-                    // Padding(
-                    //   padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-                    //   child: Container(
-                    //     alignment: Alignment.center,
-                    //     child: Column(
-                    //       children: <Widget>[
-                    //         Text(
-                    //           'Covid-19',
-                    //           style: TextStyle(
-                    //               color: _customColour.color1,
-                    //               fontSize: 40.0,
-                    //               fontWeight: FontWeight.bold),
-                    //         ),
-                    //         SizedBox(
-                    //           height: 5.0,
-                    //         ),
-                    //         Text(
-                    //           'Relief',
-                    //           style: TextStyle(
-                    //               color: _customColour.color2,
-                    //               fontSize: 35.0,
-                    //               fontStyle: FontStyle.normal),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-                    SizedBox(height: 60.0),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedPage = Page.signin;
-                            });
-                          },
-                          child: Text(
-                            'Sign In',
-                            // _selectedPage == Page.signin
-                            // ? 'Sign In'
-                            // : 'Sign Up',
-                            style: TextStyle(
-                                color: _selectedPage == Page.signin
-                                    ? _customColour.color1
-                                    : _customColour.color2,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold),
+    return Scaffold(
+      resizeToAvoidBottomInset : false,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 40.0),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            children: <Widget>[
+                              Material(
+                                type: MaterialType.transparency,
+                                child: Text(
+                                  'CART.NG',
+                                  style: TextStyle(
+                                      color: _customColour.color1,
+                                      fontSize: 40.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(height: 20.0),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Container(
+                                    alignment: Alignment.topCenter,
+                                    child: Image.asset(
+                                      "images/5a364b752c0633.9984354215135077011803.png",
+                                      width: 50,
+                                    )),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                            ],
                           ),
-                        )),
-                        Expanded(
-                            child: FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              _selectedPage = Page.signup;
-                            });
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                color: _selectedPage == Page.signup
-                                    ? _customColour.color1
-                                    : _customColour.color2,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )),
-                      ],
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).size.height / 2.5,
-                      child: _loadScreen(context, _loginBloc),
-                    )
-                  ],
-                )),
+                        ),
+                      ),
+                      SizedBox(height: 40.0),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedPage = Page.signin;
+                              });
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                  color: _selectedPage == Page.signin
+                                      ? _customColour.color1
+                                      : _customColour.color2,
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )),
+                          Expanded(
+                              child: FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                _selectedPage = Page.signup;
+                              });
+                            },
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                  color: _selectedPage == Page.signup
+                                      ? _customColour.color1
+                                      : _customColour.color2,
+                                  fontSize: 30.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )),
+                        ],
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height -
+                            MediaQuery.of(context).size.height / 1.8,
+                        child: _loadScreen(context, _loginBloc),
+                      )
+                    ],
+                  )),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -212,18 +217,6 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
-                //   child: CheckboxListTile(
-                //     value: _checkBoxTileVal,
-                //     onChanged: (newvalue) {
-                //       setState(() => _checkBoxTileVal = newvalue);
-                //     },
-                //     title: Text("I agree with terms and conditions"),
-                //     controlAffinity: ListTileControlAffinity
-                //         .leading, //  <-- leading Checkbox
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
                   child: Material(
@@ -232,13 +225,17 @@ class _LoginState extends State<Login> {
                       elevation: 0.0,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (_formKey.currentState.validate() && _selectedPage == Page.signup) {
-
+                          if (_formKey.currentState.validate() &&
+                              _selectedPage == Page.signup) {
                             print(_email.text);
                             print(_password.text);
                             User user_details = User(
                                 _fullname.text, _email.text, _password.text);
-                            _loginBloc.signUpUser.add(user_details);
+                            try {
+                              _loginBloc.signUpUser.add(user_details);
+                            } catch (e) {
+                              Fluttertoast.showToast(msg: "${e.toString()}");
+                            }
                           }
                         },
                         minWidth: MediaQuery.of(context).size.width,
@@ -256,36 +253,10 @@ class _LoginState extends State<Login> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0),
                             ),
-                            SizedBox(
-                              width: 80.0,
-                            ),
-                            Icon(
-                              Icons.arrow_right,
-                              color: Colors.white,
-                            )
                           ],
                         ),
                       )),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
-                //   child: Center(
-                //     child: Text(
-                //       "Already have an account, Sign in.",
-                //       style: TextStyle(
-                //         decoration: TextDecoration.underline,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 35.0, 30.0, 10.0),
-                //   child: Center(
-                //     child: Text(
-                //       "Terms of use. Privacy policy",
-                //     ),
-                //   ),
-                // ),
               ],
             ));
         break;
@@ -350,18 +321,6 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
-                //   child: CheckboxListTile(
-                //     value: _checkBoxTileVal,
-                //     onChanged: (newvalue) {
-                //       setState(() => _checkBoxTileVal = newvalue);
-                //     },
-                //     title: Text("Remember me"),
-                //     controlAffinity: ListTileControlAffinity
-                //         .leading, //  <-- leading Checkbox
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
                   child: Material(
@@ -370,10 +329,15 @@ class _LoginState extends State<Login> {
                       elevation: 0.0,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (_formKey.currentState.validate() && _selectedPage == Page.signin) {
-                            User user_details = User(
-                                " ", _email.text, _password.text);
-                            _loginBloc.signInUser.add(user_details);
+                          if (_formKey.currentState.validate() &&
+                              _selectedPage == Page.signin) {
+                            User user_details =
+                                User(" ", _email.text, _password.text);
+                            try {
+                              _loginBloc.signInUser.add(user_details);
+                            } catch (e) {
+                              Fluttertoast.showToast(msg: "${e.toString()}");
+                            }
                           }
                         },
                         minWidth: MediaQuery.of(context).size.width,
@@ -391,40 +355,10 @@ class _LoginState extends State<Login> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0),
                             ),
-                            SizedBox(
-                              width: 80.0,
-                            ),
-                            Icon(
-                              Icons.arrow_right,
-                              color: Colors.white,
-                            )
                           ],
                         ),
                       )),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
-                //   child: Center(
-                //     child: Text(
-                //       "Forgot Password ?",
-                //     ),
-                //   ),
-                // ),Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 10.0),
-                //   child: Center(
-                //     child: Text(
-                //       "Forgot Password ?",
-                //     ),
-                //   ),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(30.0, 100.0, 30.0, 10.0),
-                //   child: Center(
-                //     child: Text(
-                //       "Terms of use. Privacy policy",
-                //     ),
-                //   ),
-                // ),
               ],
             ));
         break;

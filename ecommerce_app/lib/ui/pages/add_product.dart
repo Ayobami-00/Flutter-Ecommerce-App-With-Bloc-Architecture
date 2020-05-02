@@ -24,7 +24,7 @@ class _AddProductState extends State<AddProduct> {
   Color grey = Colors.white;
   Color red = Colors.red;
   String selectedSize;
-  List<String> _colourList = ["Red", "Green", "Blue", "Orange", "Purple","None"];
+  List<String> _colourList = ["Red", "Green", "Blue", "Orange", "Purple","Yellow","Black","None"];
   File _image1;
   File _image2;
   bool isLoading = false;
@@ -115,8 +115,8 @@ class _AddProductState extends State<AddProduct> {
                     validator: (value) {
                       if (value.isEmpty) {
                         return "You must enter the product name";
-                      } else if (value.length > 10) {
-                        return "Product name can't have more than 10 letters";
+                      } else if (value.length > 15) {
+                        return "Product name can't have more than 15 letters";
                       }
                     },
                   ),

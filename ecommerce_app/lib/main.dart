@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               color: Colors.white,
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             );
           } else if (snapshot.hasData) {
             return HomeBlocProvider(
@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
 
   MaterialApp _buildMaterialApp(Widget homePage) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'CART.NG',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

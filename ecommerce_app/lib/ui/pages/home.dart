@@ -47,8 +47,9 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Expanded(
                 child: Text(
-              'Accountz',
+              'CART.NG',
               textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
             )),
           ],
         ),

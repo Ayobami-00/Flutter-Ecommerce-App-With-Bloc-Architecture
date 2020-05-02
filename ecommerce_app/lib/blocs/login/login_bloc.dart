@@ -9,14 +9,12 @@ class LoginBloc {
   Sink<User> get signUpUser => _signUpController.sink;
   Stream<User> get signedUpUser => _signUpController.stream;
   final StreamController<User> _signInController = StreamController<User>();
-  Sink<User> get signInUser => _signUpController.sink;
-  Stream<User> get signedInUser => _signUpController.stream;
+  Sink<User> get signInUser => _signInController.sink;
+  Stream<User> get signedInUser => _signInController.stream;
 
   LoginBloc(this.authenticationApi) {
     _signUpController.stream.listen(_createAccount);
     _signInController.stream.listen(_logIn);
-
-    // _startListenersIfEmailPasswordAreValid();
   }
 
   Future<String> _createAccount(User _user) async {
@@ -25,7 +23,7 @@ class LoginBloc {
         .createUserWithEmailAndPassword(fullname: _user.fullname, email: _user.email, password: _user.password)
         .then((user) {
       print('Created user: $user');
-      _result = 'Created user: $user';
+      _result = 'Success';
       authenticationApi
           .signInWithEmailAndPassword(email: _user.email , password: _user.password)
           .then((user) {})
