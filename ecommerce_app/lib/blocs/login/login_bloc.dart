@@ -13,31 +13,40 @@ class LoginBloc {
   Stream<User> get signedInUser => _signInController.stream;
 
   LoginBloc(this.authenticationApi) {
-    _signUpController.stream.listen(_createAccount);
-    _signInController.stream.listen(_logIn);
+    _signUpController.stream.listen(createAccount);
+    _signInController.stream.listen(logIn);
   }
 
-  Future<String> _createAccount(User _user) async {
+  Future<String> createAccount(User _user) async {
     String _result = '';
     await authenticationApi
-        .createUserWithEmailAndPassword(fullname: _user.fullname, email: _user.email, password: _user.password)
+        .createUserWithEmailAndPassword(
+            fullname: _user.fullname,
+            email: _user.email,
+            password: _user.password)
         .then((user) {
       print('Created user: $user');
       _result = 'Success';
       authenticationApi
-          .signInWithEmailAndPassword(email: _user.email , password: _user.password)
+          .signInWithEmailAndPassword(
+              email: _user.email, password: _user.password)
           .then((user) {})
           .catchError((error) async {
         print('Login error: $error');
-        _result = error;
+        String _errorString = error.toString();
+        int length = _errorString.length;
+        _result = _errorString.substring(46, (length - 7));
       });
     }).catchError((error) async {
       print('Creating user error: $error');
+       String _errorString = error.toString();
+        int length = _errorString.length;
+        _result = _errorString.substring(46, (length - 7));
     });
     return _result;
   }
 
-  Future<String> _logIn(User user) async {
+  Future<String> logIn(User user) async {
     String _result = '';
     await authenticationApi
         .signInWithEmailAndPassword(email: user.email, password: user.password)
@@ -45,7 +54,9 @@ class LoginBloc {
       _result = 'Success';
     }).catchError((error) {
       print('Login error: $error');
-      _result = error;
+      String _errorString = error.toString();
+      int length = _errorString.length;
+      _result = _errorString.substring(40, (length - 7));
     });
     return _result;
   }

@@ -70,11 +70,6 @@ class _CartState extends State<Cart> {
     _uid = HomeBlocProvider.of(context).uid;
   }
 
-  // @override
-  // void dispose() {
-  //   _homeBloc.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {

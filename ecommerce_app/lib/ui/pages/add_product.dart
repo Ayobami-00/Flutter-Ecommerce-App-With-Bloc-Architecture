@@ -19,12 +19,17 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController quantityController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   String _selectedColor = "Red";
-  Color white = Colors.white;
-  Color black = Colors.black;
-  Color grey = Colors.white;
-  Color red = Colors.red;
   String selectedSize;
-  List<String> _colourList = ["Red", "Green", "Blue", "Orange", "Purple","Yellow","Black","None"];
+  List<String> _colourList = [
+    "Red",
+    "Green",
+    "Blue",
+    "Orange",
+    "Purple",
+    "Yellow",
+    "Black",
+    "None"
+  ];
   File _image1;
   File _image2;
   bool isLoading = false;
@@ -36,16 +41,21 @@ class _AddProductState extends State<AddProduct> {
     super.didChangeDependencies();
     _homeBloc = HomeBlocProvider.of(context).homeBloc;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           elevation: 0.0,
-          backgroundColor: white,
-          leading: Icon(
-            Icons.close,
-            color: black,
+          backgroundColor: Colors.white,
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
           ),
           title: Text("Add Products", style: TextStyle(color: Colors.black))),
       body: Form(
@@ -53,11 +63,11 @@ class _AddProductState extends State<AddProduct> {
         child: isLoading
             ? Center(child: CircularProgressIndicator())
             : ListView(children: <Widget>[
-              SizedBox(height: 20.0),
+                SizedBox(height: 20.0),
                 Text(
                   "Select two images of the product from your device",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: black, fontSize: 18),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
 
                 SizedBox(height: 30.0),
@@ -68,7 +78,7 @@ class _AddProductState extends State<AddProduct> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: OutlineButton(
-                            borderSide: BorderSide(color: black, width: 2.5),
+                            borderSide: BorderSide(color: Colors.black, width: 2.5),
                             onPressed: () {
                               _selectedImage(
                                   ImagePicker.pickImage(
@@ -82,7 +92,7 @@ class _AddProductState extends State<AddProduct> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: OutlineButton(
-                            borderSide: BorderSide(color: black, width: 2.5),
+                            borderSide: BorderSide(color: Colors.black, width: 2.5),
                             onPressed: () {
                               _selectedImage(
                                   ImagePicker.pickImage(
@@ -100,16 +110,16 @@ class _AddProductState extends State<AddProduct> {
                 Text(
                   "Enter a product name with 10 characters at maximum",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: black, fontSize: 18),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
                     controller: productNameController,
                     decoration: InputDecoration(
-                      focusColor: black,
-                      fillColor: black,
-                      hoverColor: black,
+                      focusColor: Colors.black,
+                      fillColor: Colors.black,
+                      hoverColor: Colors.black,
                       hintText: "Product name",
                     ),
                     validator: (value) {
@@ -121,8 +131,6 @@ class _AddProductState extends State<AddProduct> {
                     },
                   ),
                 ),
-
-               
 
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -136,16 +144,21 @@ class _AddProductState extends State<AddProduct> {
                       if (value.isEmpty) {
                         return "You must enter a price";
                       }
+                      try {
+                        int.parse(value);
+                      } catch (e) {
+                        return "Please enter a valid price";
+                      }
                     },
                   ),
                 ),
 
-                 //select category
+                //select category
                 Row(
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Color: ', style: TextStyle(color: red)),
+                      child: Text('Color: ', style: TextStyle(color: Colors.black)),
                     ),
                     DropdownButton<String>(
                         items: _colourList
@@ -166,14 +179,14 @@ class _AddProductState extends State<AddProduct> {
                   ],
                 ),
 
-                 SizedBox(height: 10.0),
+                SizedBox(height: 10.0),
 
                 Text(
                   "Pick a size",
                   textAlign: TextAlign.center,
                 ),
 
-                 SizedBox(height: 10.0),
+                SizedBox(height: 10.0),
 
                 Row(
                   children: <Widget>[
@@ -200,12 +213,12 @@ class _AddProductState extends State<AddProduct> {
                   ],
                 ),
 
-                 SizedBox(height: 20.0),
+                SizedBox(height: 20.0),
 
                 FlatButton(
-                  color: black,
-                  textColor: white,
-                  child: Text('ADD',style: TextStyle(fontSize: 15.0)),
+                  color: Colors.black,
+                  textColor: Colors.white,
+                  child: Text('ADD', style: TextStyle(fontSize: 15.0)),
                   onPressed: () {
                     validateAndUpload();
                   },
@@ -216,11 +229,9 @@ class _AddProductState extends State<AddProduct> {
   }
 
   void changeSelectedSize(String size) {
-    
-      setState(() {
-        selectedSize = size;
-      });
-    
+    setState(() {
+      selectedSize = size;
+    });
   }
 
   void _selectedImage(Future<File> pickImage, int imageNumber) async {
@@ -239,7 +250,7 @@ class _AddProductState extends State<AddProduct> {
     if (_image1 == null) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(14.0, 50.0, 14.0, 50.0),
-        child: Icon(Icons.add, color: black),
+        child: Icon(Icons.add, color: Colors.black),
       );
     } else {
       return Image.file(_image1, fit: BoxFit.fill, width: double.infinity);
@@ -250,7 +261,7 @@ class _AddProductState extends State<AddProduct> {
     if (_image2 == null) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(14.0, 50.0, 14.0, 50.0),
-        child: Icon(Icons.add, color: black),
+        child: Icon(Icons.add, color: Colors.black),
       );
     } else {
       return Image.file(_image2, fit: BoxFit.fill, width: double.infinity);
@@ -277,17 +288,16 @@ class _AddProductState extends State<AddProduct> {
 
           StorageTaskSnapshot snapshot1 =
               await task1.onComplete.then((snapshot) => snapshot);
-        
 
           task2.onComplete.then((snapshot2) async {
             imageUrl1 = await snapshot1.ref.getDownloadURL();
             imageUrl2 = await snapshot2.ref.getDownloadURL();
-            
+
             Product product_details = Product(
-              name: productNameController.text ,
+              name: productNameController.text,
               price: int.parse(priceController.text),
               picture1: imageUrl1,
-              picture2 : imageUrl2,
+              picture2: imageUrl2,
               color: _selectedColor,
               size: selectedSize,
             );

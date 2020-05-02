@@ -21,6 +21,7 @@ class _LoginState extends State<Login> {
   TextEditingController _password = TextEditingController();
   Page _selectedPage = Page.signin;
   CustomColour _customColour = CustomColour();
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -37,7 +38,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
-      body: Stack(
+      body: isLoading == true ? Center(child: CircularProgressIndicator()) : Stack(
         children: <Widget>[
           Container(
             child: Padding(
@@ -67,16 +68,6 @@ class _LoginState extends State<Login> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              SizedBox(height: 20.0),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Container(
-                                    alignment: Alignment.topCenter,
-                                    child: Image.asset(
-                                      "images/5a364b752c0633.9984354215135077011803.png",
-                                      width: 50,
-                                    )),
-                              ),
                               SizedBox(
                                 height: 5.0,
                               ),
@@ -84,7 +75,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 40.0),
+                      SizedBox(height: 60.0),
                       Row(
                         children: <Widget>[
                           Expanded(
@@ -227,15 +218,18 @@ class _LoginState extends State<Login> {
                         onPressed: () async {
                           if (_formKey.currentState.validate() &&
                               _selectedPage == Page.signup) {
-                            print(_email.text);
-                            print(_password.text);
+                             setState(() {
+                                  isLoading = true;
+                                });
                             User user_details = User(
                                 _fullname.text, _email.text, _password.text);
-                            try {
-                              _loginBloc.signUpUser.add(user_details);
-                            } catch (e) {
-                              Fluttertoast.showToast(msg: "${e.toString()}");
-                            }
+                                String result = await _loginBloc.createAccount(user_details);
+                                if(result != "Success"){
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Fluttertoast.showToast(msg: "$result");
+                            }  
                           }
                         },
                         minWidth: MediaQuery.of(context).size.width,
@@ -331,13 +325,18 @@ class _LoginState extends State<Login> {
                         onPressed: () async {
                           if (_formKey.currentState.validate() &&
                               _selectedPage == Page.signin) {
+                                setState(() {
+                                  isLoading = true;
+                                });
                             User user_details =
                                 User(" ", _email.text, _password.text);
-                            try {
-                              _loginBloc.signInUser.add(user_details);
-                            } catch (e) {
-                              Fluttertoast.showToast(msg: "${e.toString()}");
-                            }
+                                String result = await _loginBloc.logIn(user_details);
+                            if(result != "Success"){
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Fluttertoast.showToast(msg: "$result");
+                            }                      
                           }
                         },
                         minWidth: MediaQuery.of(context).size.width,

@@ -25,12 +25,6 @@ class _ProductsState extends State<Products> {
     _uid = HomeBlocProvider.of(context).uid;
   }
 
-  // @override
-  // void dispose() {
-  //   _homeBloc.dispose();
-  //   super.dispose();
-  // }
-
   List<Map<String, dynamic>> items = [
     {
       "name": "Mother Board",
